@@ -22,18 +22,16 @@ X = college_data.drop(columns=["Apps"])
 # Create 80/20 test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
 
-# Add ones for intercept coefficient and convert categorical points to numerical points
-X_train = sm.add_constant(X_train)
+# Convert categorical points to numerical points
 X_train = pd.get_dummies(X_train, drop_first=True, dtype=int)
-X_test  = sm.add_constant(X_test)
 X_test  = pd.get_dummies(X_test, drop_first=True, dtype=int)
 
 # Fit OLS model on training
-model = sm.OLS(y_train, X_train).fit()
+model = sm.OLS(y_train, sm.add_constant(X_train)).fit()
 # print(model.summary())
 
 # Create predictions using testing set
-predictions = model.predict(X_test)
+predictions = model.predict(sm.add_constant(X_test))
 # print(predictions)
 
 # Calculate basic metrics
@@ -51,9 +49,9 @@ DTR_model = DecisionTreeRegressor(random_state=1)
 DTR_model.fit(X_train, y_train)
 
 # # Display tree (large)
-plt.figure(figsize=(12,12))
-plot_tree(DTR_model, feature_names=X_train.columns)
-plt.show()
+# plt.figure(figsize=(12,12))
+# plot_tree(DTR_model, feature_names=X_train.columns)
+# plt.show()
 
 # Create predictions for DTR_model
 DTR_predictions = DTR_model.predict(X_test)
@@ -108,17 +106,17 @@ pruned_DTR_R_Squared = 1 - (pruned_DTR_SS_Error / SS_T)
 # Retrieving important features for pruned_DTR_model
 pruned_DTR_important_features = pruned_model.feature_importances_
 
-# Visualizing feature importances
-pruned_DTR_feature_df = pd.DataFrame({
-    'Feature': X_train.columns,
-    'Importance': pruned_DTR_important_features
-}).sort_values(by='Importance', ascending=False)
-feature_df = pruned_DTR_feature_df[pruned_DTR_feature_df["Feature"] != 'const']
-feature_df.plot(kind='barh', x="Feature", y="Importance")
-plt.xlabel("Feature Name")
-plt.xticks(rotation=45)
-plt.ylabel("Feature Importance")
-plt.show()
+# # Visualizing feature importances
+# pruned_DTR_feature_df = pd.DataFrame({
+#     'Feature': X_train.columns,
+#     'Importance': pruned_DTR_important_features
+# }).sort_values(by='Importance', ascending=False)
+# feature_df = pruned_DTR_feature_df[pruned_DTR_feature_df["Feature"] != 'const']
+# feature_df.plot(kind='barh', x="Feature", y="Importance")
+# plt.xlabel("Feature Name")
+# plt.xticks(rotation=45)
+# plt.ylabel("Feature Importance")
+# plt.show()
 
 # Fit Bagging (random forest regressor) Models on data
 bag_500_model  = RandomForestRegressor(max_features=len(X_train.columns), random_state=1, n_estimators=500)
@@ -150,17 +148,17 @@ bag_1000_DTR_R_Squared = 1 - (bag_1000_DTR_SS_Error / SS_T)
 # Retrieving important features for pruned_DTR_model
 bagged_500_important_features = bag_500_model.feature_importances_
 
-# Visualizing feature importances
-bagged_500_feature_df = pd.DataFrame({
-    'Feature': X_train.columns,
-    'Importance': bagged_500_important_features
-}).sort_values(by='Importance', ascending=False)
-feature_df = bagged_500_feature_df[bagged_500_feature_df["Feature"] != 'const']
-feature_df.plot(kind='barh', x="Feature", y="Importance")
-plt.xlabel("Feature Name")
-plt.xticks(rotation=45)
-plt.ylabel("Feature Importance")
-plt.show()
+# # Visualizing feature importances
+# bagged_500_feature_df = pd.DataFrame({
+#     'Feature': X_train.columns,
+#     'Importance': bagged_500_important_features
+# }).sort_values(by='Importance', ascending=False)
+# feature_df = bagged_500_feature_df[bagged_500_feature_df["Feature"] != 'const']
+# feature_df.plot(kind='barh', x="Feature", y="Importance")
+# plt.xlabel("Feature Name")
+# plt.xticks(rotation=45)
+# plt.ylabel("Feature Importance")
+# plt.show()
 
 # Fit Random Forest Regressors on data
 random_forest_500_model  = RandomForestRegressor(max_features=3, random_state=1, n_estimators=500)
@@ -177,28 +175,28 @@ random_forest_500_DTR_MSE       = mean_squared_error(y_test, random_forest_500_p
 random_forest_500_DTR_RMSE      = random_forest_500_DTR_MSE ** 0.5
 random_forest_500_DTR_SS_Error  = ((y_test - random_forest_500_predictions) ** 2).sum()
 random_forest_500_DTR_R_Squared = 1 - (random_forest_500_DTR_SS_Error / SS_T)
-print(random_forest_500_DTR_MSE)
-print(random_forest_500_DTR_RMSE)
-print(random_forest_500_DTR_R_Squared)
+# print(random_forest_500_DTR_MSE)
+# print(random_forest_500_DTR_RMSE)
+# print(random_forest_500_DTR_R_Squared)
 random_forest_1000_DTR_MSE       = mean_squared_error(y_test, random_forest_1000_predictions)
 random_forest_1000_DTR_RMSE      = random_forest_1000_DTR_MSE ** 0.5
 random_forest_1000_DTR_SS_Error  = ((y_test - random_forest_1000_predictions) ** 2).sum()
 random_forest_1000_DTR_R_Squared = 1 - (random_forest_1000_DTR_SS_Error / SS_T)
-print(random_forest_1000_DTR_MSE)
-print(random_forest_1000_DTR_RMSE)
-print(random_forest_1000_DTR_R_Squared)
+# print(random_forest_1000_DTR_MSE)
+# print(random_forest_1000_DTR_RMSE)
+# print(random_forest_1000_DTR_R_Squared)
 
 # Retrieving important features for pruned_DTR_model
 random_forest_500_important_features = random_forest_500_model.feature_importances_
 
-# Visualizing feature importances
-random_forest_500_feature_df = pd.DataFrame({
-    'Feature': X_train.columns,
-    'Importance': random_forest_500_important_features
-}).sort_values(by='Importance', ascending=False)
-feature_df = random_forest_500_feature_df[random_forest_500_feature_df["Feature"] != 'const']
-feature_df.plot(kind='barh', x="Feature", y="Importance")
-plt.xlabel("Feature Name")
-plt.xticks(rotation=45)
-plt.ylabel("Feature Importance")
-plt.show()
+# # Visualizing feature importances
+# random_forest_500_feature_df = pd.DataFrame({
+#     'Feature': X_train.columns,
+#     'Importance': random_forest_500_important_features
+# }).sort_values(by='Importance', ascending=False)
+# feature_df = random_forest_500_feature_df[random_forest_500_feature_df["Feature"] != 'const']
+# feature_df.plot(kind='barh', x="Feature", y="Importance")
+# plt.xlabel("Feature Name")
+# plt.xticks(rotation=45)
+# plt.ylabel("Feature Importance")
+# plt.show()
