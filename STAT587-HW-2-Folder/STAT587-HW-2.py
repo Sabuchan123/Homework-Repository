@@ -111,8 +111,7 @@ pruned_DTR_important_features = pruned_model.feature_importances_
 #     'Feature': X_train.columns,
 #     'Importance': pruned_DTR_important_features
 # }).sort_values(by='Importance', ascending=False)
-# feature_df = pruned_DTR_feature_df[pruned_DTR_feature_df["Feature"] != 'const']
-# feature_df.plot(kind='barh', x="Feature", y="Importance")
+# pruned_DTR_feature_df.plot(kind='barh', x="Feature", y="Importance")
 # plt.xlabel("Feature Name")
 # plt.xticks(rotation=45)
 # plt.ylabel("Feature Importance")
@@ -153,8 +152,7 @@ bagged_500_important_features = bag_500_model.feature_importances_
 #     'Feature': X_train.columns,
 #     'Importance': bagged_500_important_features
 # }).sort_values(by='Importance', ascending=False)
-# feature_df = bagged_500_feature_df[bagged_500_feature_df["Feature"] != 'const']
-# feature_df.plot(kind='barh', x="Feature", y="Importance")
+# bagged_500_feature_df.plot(kind='barh', x="Feature", y="Importance")
 # plt.xlabel("Feature Name")
 # plt.xticks(rotation=45)
 # plt.ylabel("Feature Importance")
@@ -194,9 +192,11 @@ random_forest_500_important_features = random_forest_500_model.feature_importanc
 #     'Feature': X_train.columns,
 #     'Importance': random_forest_500_important_features
 # }).sort_values(by='Importance', ascending=False)
-# feature_df = random_forest_500_feature_df[random_forest_500_feature_df["Feature"] != 'const']
-# feature_df.plot(kind='barh', x="Feature", y="Importance")
+# random_forest_500_feature_df.plot(kind='barh', x="Feature", y="Importance")
 # plt.xlabel("Feature Name")
 # plt.xticks(rotation=45)
 # plt.ylabel("Feature Importance")
 # plt.show()
+
+
+# Problem 2
