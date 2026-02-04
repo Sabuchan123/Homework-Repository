@@ -134,9 +134,9 @@ pruned_DTR_feature_df = pd.DataFrame({
     'Importance': pruned_DTR_important_features
 }).sort_values(by='Importance', ascending=False)
 pruned_DTR_feature_df.plot(kind='barh', x="Feature", y="Importance")
-plt.xlabel("Feature Name")
+plt.xlabel("Feature Importance")
 plt.xticks(rotation=45)
-plt.ylabel("Feature Importance")
+plt.ylabel("Feature Name")
 plt.show()
 
 # Fit Bagging (random forest regressor) Models on data
@@ -175,9 +175,9 @@ bagged_500_feature_df = pd.DataFrame({
     'Importance': bagged_500_important_features
 }).sort_values(by='Importance', ascending=False)
 bagged_500_feature_df.plot(kind='barh', x="Feature", y="Importance")
-plt.xlabel("Feature Name")
+plt.xlabel("Feature Importance")
 plt.xticks(rotation=45)
-plt.ylabel("Feature Importance")
+plt.ylabel("Feature Name")
 plt.show()
 
 # Fit Random Forest Regressors on data
@@ -215,9 +215,9 @@ random_forest_500_feature_df = pd.DataFrame({
     'Importance': random_forest_500_important_features
 }).sort_values(by='Importance', ascending=False)
 random_forest_500_feature_df.plot(kind='barh', x="Feature", y="Importance")
-plt.xlabel("Feature Name")
+plt.xlabel("Feature Importance")
 plt.xticks(rotation=45)
-plt.ylabel("Feature Importance")
+plt.ylabel("Feature Name")
 plt.show()
 
 
